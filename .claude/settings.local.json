@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python3 translate_notebooks_complete.py)",
-      "Bash(python3)"
-    ]
-  }
-}

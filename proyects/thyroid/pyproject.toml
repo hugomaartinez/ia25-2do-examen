@@ -1,0 +1,22 @@
+[project]
+name = "thyroid"
+version = "0.1.0"
+description = "Thyroid Disease Detection - Comparative Analysis of Classification Models"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas>=3.0",
+    "numpy",
+    "matplotlib",
+    "seaborn",
+    "scikit-learn>=1.6",
+    "xgboost>=3.1",
+    "torch",
+    "kagglehub>=0.4",
+    "ipykernel",
+    "nbconvert>=7.17.0",
+]
+
+[tool.yapf]
+based_on_style = "pep8"
+column_limit = 120

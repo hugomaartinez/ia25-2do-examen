@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominando el Chunking en RAG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .overlap-highlight {
+            background: repeating-linear-gradient(45deg,
+                    #fef3c7,
+                    #fef3c7 10px,
+                    #fffbeb 10px,
+                    #fffbeb 20px);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 leading-relaxed">
+
+    <!-- Hero Section -->
+    <header class="pt-20 pb-16 px-6 border-b border-slate-200 bg-white">
+        <div class="w-full max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Chunking <span
+                    class="gradient-text">&nbsp(Fragmetación)</span></h1>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                Cómo dividir documentos extensos para que tu IA recupere la información exacta sin perder el contexto.
+            </p>
+        </div>
+    </header>
+
+    <main class="w-full mx-auto py-16 px-6 space-y-24">
+
+        <!-- Section 1: Concepto -->
+        <section class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 bg-indigo-600 text-white rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 11V4h7" />
+                            <path d="M4 13v7h7" />
+                            <path d="M20 11V4h-7" />
+                            <path d="M20 13v7h-7" />
+                        </svg>
+                    </span>
+                    ¿Qué es el Chunking?
+                </h2>
+                <div class="space-y-4 text-slate-600">
+                    <p>
+                        En un sistema RAG, no podemos inyectar un libro entero en el prompt de una vez. El
+                        <strong>Chunking</strong>
+                        es el proceso de dividir un documento en fragmentos más pequeños y manejables.
+                    </p>
+                    <p>
+                        Estos fragmentos se convierten en vectores (embeddings) y se almacenan en una base de datos.
+                        Cuando el usuario pregunta algo, el sistema busca los <strong>chunks</strong> más relevantes
+                        semánticamente.
+                    </p>
+                </div>
+            </div>
+            <div class="glass-card p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-50 rounded-full"></div>
+                <div class="relative">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Visualización de Flujo
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="bg-white p-3 rounded border border-slate-200 text-xs font-mono text-slate-400">
+                            Documento de 50 páginas...</div>
+                        <div class="flex justify-center text-indigo-500 py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 5v14" />
+                                <path d="m19 12-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div
+                                class="h-16 bg-indigo-100 border-2 border-indigo-200 rounded-lg flex items-center justify-center font-bold text-indigo-600 text-sm shadow-inner">
+                                #1</div>
+                            <div
+                                class="h-16 bg-indigo-100 border-2 border-indigo-200 rounded-lg flex items-center justify-center font-bold text-indigo-600 text-sm shadow-inner">
+                                #2</div>
+                            <div
+                                class="h-16 bg-indigo-100 border-2 border-indigo-200 rounded-lg flex items-center justify-center font-bold text-indigo-600 text-sm shadow-inner">
+                                #3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Estrategias de Chunking -->
+        <section>
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold mb-4">Estrategias de Chunking</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+
+                <!-- Método 1: Fixed-size Chunking -->
+                <div
+                    class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h4 class="font-bold text-indigo-600">1. Chunking de Tamaño Fijo (Fixed-size Chunking)</h4>
+                        <p class="text-xs text-slate-500 mt-1">Es el método más básico. Se define un número exacto de
+                            caracteres o tokens por fragmento.</p>
+                    </div>
+                    <div class="bg-white p-6 bg-slate-900 overflow-x-auto code-font">
+                        <div class="text-xs text-slate-500 mt-2">
+                            <ul class="list-disc ml-5 space-y-1">
+                                <li><strong>Cómo funciona:</strong> Si decides fragmentos de 500 caracteres, el sistema
+                                    corta cada 500.</li>
+                                <li><strong>Pros:</strong> Muy rápido y computacionalmente barato.</li>
+                                <li><strong>Contras:</strong> Puede cortar una frase o una palabra por la mitad,
+                                    perdiendo el sentido completo.</li>
+                                <li><strong>Solución:</strong> Se suele usar un overlap (solapamiento), donde el final
+                                    del fragmento 1 se repite al inicio del fragmento 2 para mantener el contexto.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Método 2: Recursive Character Splitting -->
+                <div
+                    class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h4 class="font-bold text-indigo-600">2. Fragmentación Recursiva (Recursive Character Splitting)
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-1">Es el estándar actual para documentos de texto plano
+                            (usado por herramientas como LangChain).</p>
+                    </div>
+                    <div class="bg-white p-6 bg-slate-900 overflow-x-aut code-font">
+                        <div class="text-xs text-slate-500 mt-2">
+                            <ul class="list-disc ml-5 space-y-1">
+                                <li><strong>Cómo funciona:</strong> Intenta dividir el texto por jerarquía de
+                                    separadores: primero busca párrafos (\n\n), luego saltos de línea (\n), luego
+                                    espacios entre palabras ( ), y finalmente caracteres individuales si es necesario.
+                                </li>
+                                <li><strong>Objetivo:</strong> Mantener los párrafos y oraciones unidos tanto como sea
+                                    posible dentro del límite de tamaño definido.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Método 3: Structure-aware -->
+                <div
+                    class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h4 class="font-bold text-indigo-600">
+                            3. Chunking Basado en Documentos (Structure-aware)
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Este método respeta la estructura lógica del archivo original.
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 bg-slate-900 overflow-x-aut code-font">
+                        <div class="text-xs text-slate-500 mt-2">
+                            <ul class="list-disc ml-5 space-y-1">
+                                <li>
+                                    <strong>Markdown:</strong>
+                                    Divide por encabezados (#, ##, ###).
+                                </li>
+                                <li>
+                                    <strong>HTML:</strong>
+                                    Divide por etiquetas de sección o artículos (<code>&lt;section&gt;</code>,
+                                    <code>&lt;article&gt;</code>).
+                                </li>
+                                <li>
+                                    <strong>Código:</strong>
+                                    Divide por funciones o clases.
+                                </li>
+                                <li>
+                                    <strong>Tablas:</strong>
+                                    Requiere un tratamiento especial para no perder la relación entre filas y columnas.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Método 4: Semantic Chunking -->
+                <div
+                    class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h4 class="font-bold text-indigo-600">
+                            4. Chunking Semántico (Semantic Chunking)
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Es el método más avanzado y reciente. Divide el texto basándose en el significado
+                            (semántica)
+                            en lugar de la estructura.
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 bg-slate-900 overflow-x-aut code-font">
+                        <div class="text-xs text-slate-500 mt-2">
+                            <ul class="list-disc ml-5 space-y-1">
+                                <li>
+                                    <strong>Cómo funciona:</strong>
+                                    Utiliza modelos de embeddings (vectores) para detectar cambios de tema en el texto.
+                                    Busca dónde se "distancia" semánticamente el contenido y corta ahí.
+                                </li>
+                                <li>
+                                    <strong>Ventaja:</strong>
+                                    Evita cortar frases a la mitad porque no corta en cualquier lugar, sino donde cambia
+                                    el contexto.
+                                </li>
+                                <li>
+                                    <strong>Desventaja:</strong>
+                                    Es computacionalmente más costoso que los métodos anteriores.
+                                </li>
+                                <li>
+                                    <strong>Uso:</strong>
+                                    Ideal para documentos técnicos complejos o textos donde la estructura no sigue
+                                    reglas
+                                    claras (ej. transcripciones de reuniones).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Overlap Visual -->
+        <section class="space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold mb-4">El Secreto: El Overlap (Solapamiento)</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">
+                    Si cortamos un texto por la mitad, podemos perder la relación entre el sujeto y el predicado. Por
+                    eso, repetimos un poco de texto entre fragmentos.
+                </p>
+            </div>
+
+            <div class="bg-slate-900 rounded-3xl p-10 shadow-2xl overflow-hidden relative">
+                <div class="flex flex-col md:flex-row gap-4 relative z-10">
+                    <!-- Fragmento 1 -->
+                    <div
+                        class="flex-1 bg-slate-800 border border-slate-700 rounded-2xl p-6 relative group overflow-hidden">
+                        <span
+                            class="absolute top-0 left-0 bg-indigo-500 text-[10px] font-black px-3 py-1 rounded-br-lg text-white uppercase tracking-tighter">Chunk
+                            01</span>
+                        <div class="text-slate-300 font-mono text-sm leading-relaxed mt-4">
+                            "El cliente tiene un plazo de 14 días para devolver el producto<span
+                                class="bg-amber-400/20 text-amber-200 px-1 rounded-sm border border-amber-400/30">en su
+                                embalaje original.</span>"
+                        </div>
+
+                    </div>
+
+                    <!-- Fragmento 2 -->
+                    <div
+                        class="flex-1 bg-slate-800 border border-slate-700 rounded-2xl p-6 relative group overflow-hidden">
+                        <span
+                            class="absolute top-0 left-0 bg-purple-500 text-[10px] font-black px-3 py-1 rounded-br-lg text-white uppercase tracking-tighter">Chunk
+                            02</span>
+
+                        <div class="text-slate-300 font-mono text-sm leading-relaxed mt-4 ml-8">
+                            "<span class="bg-amber-400/20 text-amber-200 px-1 rounded-sm border border-amber-400/30">en
+                                su
+                                embalaje original.</span> Una vez recibido, el reembolso tardará 5 días."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-8">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-amber-400/30 border border-amber-400 rounded"></div>
+                        <span class="text-xs text-slate-400">Zona de Solapamiento (Contexto Compartido)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Tips -->
+        <section class="bg-indigo-600 rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute right-0 top-0 p-8 opacity-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                </svg>
+            </div>
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-8">Reglas de Oro del Chunking</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center font-bold">01
+                        </div>
+                        <h4 class="font-bold text-xl">¿Tamaño?</h4>
+                        <ul class="text-indigo-100 text-sm leading-relaxed list-disc pl-5 space-y-1">
+                            <li><strong>FAQs:</strong> 128 a 256 tokens (coincide naturalmente con pares de
+                                pregunta-respuesta)</li>
+                            <li><strong>Documentos técnicos:</strong> 300 a 500 tokens (preserva los procedimientos paso
+                                a paso)
+                            </li>
+                            <li><strong>Artículos de investigación:</strong> 512 a 1024 tokens (mantiene argumentos
+                                complejos)</li>
+                            <li><strong>Documentos legales:</strong> 600 a 1000 tokens (conserva la integridad de las
+                                cláusulas)</li>
+                            <li><strong>Documentación de código:</strong> 200 a 400 tokens (se alinea con el contexto a
+                                nivel de función)</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center font-bold">02
+                        </div>
+                        <h4 class="font-bold text-xl">¿Overlap?</h4>
+                        <p class="text-indigo-100 text-sm leading-relaxed">
+                            Un 10% a 20% de solapamiento es el estándar. Garantiza que la transición entre fragmentos
+                            sea coherente.
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center font-bold">03
+                        </div>
+                        <h4 class="font-bold text-xl">¿Modelo?</h4>
+                        <p class="text-indigo-100 text-sm leading-relaxed">
+                            El tamaño del chunk debe ser menor que la ventana de contexto de tu modelo de Embeddings
+                            (ej: Llama 3 tiene 8k).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <div class="mt-8 flex justify-between">
+            <button onclick="openModal('docs/web/popup-faq.html')" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-800 px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6"></path>
+                </svg>
+                Anterior: FAQ
+            </button>
+            <button onclick="openModal('docs/web/popup-embeddings.html')" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm">
+                Siguiente: Embeddings
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+    </main>
+
+</body>
+
+</html>

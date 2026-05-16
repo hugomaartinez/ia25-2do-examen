@@ -1,0 +1,90 @@
+<!-- SECCIÓN: ARQUITECTURA -->
+<div id="section-arquitectura" class="content-section animate-fade-in">
+    <h2 class="text-3xl font-bold mb-8 text-indigo-900">Arquitectura de la Solución</h2>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+        <!-- IA Local -->
+        <div onclick="showSection('ia-local')"
+            class="cursor-pointer bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-indigo-400 transition-all">
+            <div
+                class="absolute -right-6 -top-6 w-32 h-32 bg-indigo-50 rounded-full group-hover:scale-150 transition-transform duration-500">
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="16" height="16" x="4" y="4" rx="2" />
+                        <rect width="6" height="6" x="9" y="9" rx="1" />
+                        <path d="M15 2v2" />
+                        <path d="M15 20v2" />
+                        <path d="M2 15h2" />
+                        <path d="M2 9h2" />
+                        <path d="M20 15h2" />
+                        <path d="M20 9h2" />
+                        <path d="M9 2v2" />
+                        <path d="M9 20v2" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">IA Local</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">Modelos de lenguaje (LLM) en local mediante
+                    <strong>Ollama</strong>. Privacidad 100% y cero costes por uso de API, bloqueando la fuga de
+                    datos de clientes corporativos.
+                </p>
+            </div>
+        </div>
+
+        <!-- RAG -->
+        <div onclick="showSection('rag')"
+            class="cursor-pointer bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-blue-400 transition-all">
+            <div
+                class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500">
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                        <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+                        <path d="M3 12A9 3 0 0 0 21 12" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">RAG</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">Mecanismo de Generación Aumentada por
+                    Recuperación en <strong>ChromaDB</strong>. Inyecta inteligentemente la base de conocimiento
+                    (FAQs) de la empresa al LLM.</p>
+            </div>
+        </div>
+
+        <!-- Agente -->
+        <div onclick="showSection('agente')"
+            class="cursor-pointer bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group hover:border-emerald-400 transition-all">
+            <div
+                class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500">
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8" />
+                        <rect width="16" height="12" x="4" y="8" rx="2" />
+                        <path d="M2 14h2" />
+                        <path d="M20 14h2" />
+                        <path d="M15 13v2" />
+                        <path d="M9 13v2" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">Agente</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">Centro lógico construido con
+                    <strong>LangChain</strong>. Recibe el email, coordina la búsqueda RAG, y toma la decisión de
+                    responder o escalar a un operador humano.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interacción visual del flujo -->
+    <div class="bg-slate-900 rounded-2xl p-8 relative overflow-hidden shadow-xl">
+        <img src="docs/web/flujo.png" alt="Diagrama de Flujo" class="w-full h-auto rounded-lg shadow-lg">
+    </div>
+
+</div>

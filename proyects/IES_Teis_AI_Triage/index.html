@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad: Agente de Triaje de Emails - TechPyme</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .rag-step:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .code-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .code-container::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        /* Agent Pulse Animation */
+        .agent-pulse-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 20px;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            animation: agent-pulse 2s ease-out infinite;
+            z-index: 0;
+        }
+
+        .agent-pulse-ring.delay-1 {
+            animation-delay: 0.8s;
+            inset: -16px;
+            border-radius: 26px;
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+
+        @keyframes agent-pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 0;
+                transform: scale(1.08);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .agent-brain-icon {
+            animation: brain-beat 3s ease-in-out infinite;
+        }
+
+        @keyframes brain-beat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .rag-flow-badge {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: rgba(165, 180, 252, 0.7);
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white py-12 px-6 shadow-lg">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-white/20 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                </div>
+                <span class="text-indigo-200 font-semibold tracking-wider uppercase text-sm tracking-widest">Práctica:
+                    IA con Python</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">AI TRIAGE</h1>
+            <p class="text-xl text-indigo-100 max-w-2xl">
+                Construcción de un Agente de Triaje de Emails inteligente para TechPyme usando RAG y modelos locales.
+            </p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white border-b border-slate-200 z-50 px-4">
+        <div class="max-w-5xl mx-auto flex overflow-x-auto no-scrollbar py-1 space-x-8" id="tab-container">
+            <button onclick="showSection('introduccion')" id="nav-introduccion"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap tab-active">
+                Introducción
+            </button>
+            <button onclick="showSection('arquitectura')" id="nav-arquitectura"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap text-slate-500 hover:text-indigo-600">
+                Arquitectura
+            </button>
+            <button onclick="showSection('ia-local')" id="nav-ia-local"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap text-slate-500 hover:text-indigo-600">
+                IA Local
+            </button>
+            <button onclick="showSection('rag')" id="nav-rag"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap text-slate-500 hover:text-indigo-600">
+                RAG
+            </button>
+            <button onclick="showSection('agente')" id="nav-agente"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap text-slate-500 hover:text-indigo-600">
+                Agente
+            </button>
+            <button onclick="showSection('rag2')" id="nav-rag2"
+                class="tab-button flex items-center gap-2 px-4 py-4 text-sm font-medium transition-all whitespace-nowrap text-slate-500 hover:text-indigo-600">
+                RAG 2.0
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-5xl mx-auto py-12 px-6">
+
+        <!-- El contenido se carga dinámicamente aquí -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6 mt-12 border-t border-slate-800">
+        <div
+            class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div>
+                <div class="font-bold text-white text-lg mb-1">IES de Teis</div>
+                <p class="text-xs text-slate-500 uppercase tracking-widest">Departamento de Informática</p>
+            </div>
+            <div class="text-sm">
+                <p>Curso especialización en Inteligencia Artificial y Big Data</p>
+                <p>Módulo profesional: Programación de inteligencia artificial</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Container -->
+    <div id="popup-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+        onclick="closeModal()">
+        <div class="bg-white rounded-2xl shadow-2xl w-[90%] max-h-[90vh] overflow-hidden flex flex-col relative animate-fade-in"
+            onclick="event.stopPropagation()">
+            <button onclick="closeModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-colors z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+            <div id="modal-content" class="p-8 overflow-y-auto min-h-[300px]">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        async function openModal(url) {
+            const modal = document.getElementById('popup-modal');
+            const contentDiv = document.getElementById('modal-content');
+
+            contentDiv.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-10 w-10 border-b-4 border-indigo-600"></div></div>';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const text = await response.text();
+                if (url.endsWith('.md')) {
+                    contentDiv.innerHTML = '<div class="prose max-w-none text-left">' + marked.parse(text) + '</div>';
+                } else {
+                    contentDiv.innerHTML = text;
+                }
+            } catch (error) {
+                contentDiv.innerHTML = '<p class="text-red-500 font-bold p-10 text-center">Error cargando el contenido. Asegúrate de estar usando un Live Server (http://) y no abriendo el archivo como file://.</p>';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('popup-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Navigation Logic
+        async function showSection(id) {
+            // Actualizar clases de los botones de navegación
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('tab-active', 'text-indigo-600');
+                btn.classList.add('text-slate-500');
+            });
+
+            const activeBtn = document.getElementById('nav-' + id);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active', 'text-indigo-600');
+                activeBtn.classList.remove('text-slate-500');
+            }
+
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-10 w-10 border-b-4 border-indigo-600"></div></div>';
+
+                try {
+                    console.log(`docs/web/${id}.html`);
+                    const response = await fetch(`docs/web/${id}.html`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const html = await response.text();
+                    mainContent.innerHTML = html;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } catch (error) {
+                    mainContent.innerHTML = '<p class="text-red-500 font-bold p-10 text-center">Error cargando el contenido. Asegúrate de estar usando un servidor local (http://) y no abriendo el archivo como file://.</p>';
+                }
+            }
+        }
+
+        // Cargar la primera sección por defecto
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('introduccion');
+        });
+    </script>
+</body>
+
+</html>

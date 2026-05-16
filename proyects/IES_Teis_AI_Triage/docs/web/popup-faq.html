@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ: Base de Conocimiento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 leading-relaxed">
+
+    <!-- Hero Section -->
+    <header class="py-20 px-6 bg-white border-b border-slate-200">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl font-black mb-6 tracking-tight text-slate-900">FAQs <span
+                    class="text-indigo-600">&nbsp(Documento de Conocimiento)</span></h1>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                Este es el contenido exacto de <code
+                    class="bg-slate-100 text-indigo-600 px-2 py-1 rounded code-font">faqs.txt</code> que sirve como
+                fuente de la verdad (Knowledge Base) para el Agente.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto py-16 px-6 space-y-12">
+
+        <section class="bg-white p-8 md:p-10 rounded-[3rem] border border-slate-200 shadow-xl overflow-hidden relative">
+            <h2 class="text-3xl font-bold mb-6 flex items-center gap-3 text-slate-900">
+                <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                </div>
+                Contenido del Archivo
+            </h2>
+            <div
+                class="bg-slate-900 p-6 md:p-8 rounded-2xl border border-slate-800 h-96 overflow-y-auto text-sm code-font text-slate-300 whitespace-pre-wrap shadow-inner scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900 leading-relaxed">
+                INFORMACIÓN GENERAL
+                Nuestra tienda online se llama "TechPyme".
+                Estamos especializados en venta de electrónica y accesorios tecnológicos.
+                El horario de atención al cliente es de lunes a viernes, de 9:00 a 18:00 horas.
+                Los sábados, domingos y festivos el servicio de atención al cliente está cerrado.
+
+                ENVÍOS Y PLAZOS
+                Los envíos estándar tardan entre 48 y 72 horas laborables en llegar a la península ibérica.
+                No realizamos envíos a las Islas Canarias, Islas Baleares, Ceuta ni Melilla.
+                El coste del envío estándar es de 4,99 euros para pedidos de menos de 50 euros.
+                Los envíos son completamente gratuitos para pedidos con un importe igual o superior a 50 euros.
+                Ofrecemos también envío express (24 horas laborables) por un coste adicional de 9,99 euros.
+                Los pedidos realizados antes de las 14:00 horas se procesan el mismo día.
+
+                DEVOLUCIONES Y CAMBIOS
+                Aceptamos devoluciones durante los primeros 14 días naturales tras la recepción del pedido.
+                Para procesar una devolución, el artículo debe estar en su embalaje original y sin señales de uso.
+                Para solicitar una devolución, el cliente debe enviar un correo a devoluciones@techpyme.es indicando su
+                número de pedido.
+                Una vez aprobada la devolución, el cliente recibirá el reembolso en un plazo de 5-7 días hábiles.
+
+                PRODUCTOS DEFECTUOSOS O DAÑADOS
+                Si un cliente recibe un producto defectuoso o roto, debe contactarnos en un plazo máximo de 48 horas.
+                En el caso de producto defectuoso o roto, TechPyme asume íntegramente los gastos de envío de la
+                devolución.
+                Para productos defectuosos, ofrecemos reposición inmediata sin coste adicional para el cliente.
+
+                SOPORTE TÉCNICO
+                Ofrecemos soporte técnico básico para todos los productos adquiridos en nuestra tienda.
+                No ofrecemos soporte técnico para productos que no hayan sido comprados directamente en TechPyme.
+                Para soporte técnico, contactar a soporte@techpyme.es con el número de pedido y una descripción del
+                problema.
+
+                MÉTODOS DE PAGO
+                Aceptamos pagos con tarjeta de crédito y débito (Visa, Mastercard, American Express).
+                También aceptamos pagos a través de PayPal y transferencia bancaria.
+                No aceptamos contrareembolso.
+                El pago mediante transferencia bancaria puede retrasar el envío hasta que el pago sea verificado (1-2
+                días hábiles).
+
+                FACTURACIÓN
+                Las facturas se envían automáticamente por correo electrónico al finalizar la compra.
+                Para solicitar una factura con datos fiscales de empresa, es imprescindible indicarlo antes de finalizar
+                el pago.
+                No podemos emitir facturas con datos de empresa una vez procesado el pedido.
+
+                GARANTÍA
+                Todos nuestros productos disponen de 2 años de garantía legal según la normativa europea.
+                La garantía no cubre daños por un uso incorrecto o accidentes.</div>
+        </section>
+
+        <!-- Navegación -->
+        <div class="mt-8 flex justify-end">
+            <button onclick="openModal('docs/web/popup-chunking.html')"
+                class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm">
+                Siguiente: Chunking
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

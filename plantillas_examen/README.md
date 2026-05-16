@@ -34,6 +34,7 @@ No esta pensada como material de estudio largo, sino como una referencia para:
 - `07_red_neuronal_mlp.ipynb`
 - `08_cnn.ipynb`
 - `09_pipeline_end_to_end.ipynb`
+- `10_mapa_proyectos_y_mejoras_examen.ipynb`
 
 ## Regla general
 
@@ -50,3 +51,5 @@ No esta pensada como material de estudio largo, sino como una referencia para:
 ## Consejo de examen
 
 Si no sabes por donde empezar, abre `00_indice_rapido.ipynb`, ejecuta el mini diagnostico del dataframe y decide la plantilla por el tipo de `target`.
+
+Si el ejercicio se basa en alguno de los proyectos del repositorio, abre `10_mapa_proyectos_y_mejoras_examen.ipynb` para ver que proyectos son viables sin internet y que mejoras son mas probables.

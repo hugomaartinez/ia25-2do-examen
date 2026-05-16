@@ -9,7 +9,7 @@ Básicamente, permite utilizar los miles de modelos de lenguaje (LLMs) y modelos
 
 * ** Integración Nativa:** Sustituye a las integraciones antiguas que estaban dispersas en `langchain-community`, ofreciendo un mantenimiento más robusto.
 * **Flexibilidad de Ejecución:** Permita ejercer modelos de forma local (usando `transformers` y `acelerate`) o de forma remota mediante el **Hugging Face Inference API**.
-* **Compatibilidad con Cuantización:** Soporte fácilmente la carga de modelos en bits reducidos (4-bit, 8-bit) para ahorar memoria RAM/VRAM.
+* **Compatibilidad con Cuantización:** Soporte fácilmente la carga de modelos en bits reducidos (4-bit, 8-bit) para recibir memoria RAM/VRAM.
 * **Estandarización de Salida:** Los modelos siguen las interfaces `BaseLLM` o `ChatModel` de LangChain, facilitando el intercambio de modelos sin cambiar todo el código.
 
 
@@ -20,7 +20,7 @@ Para un sistema de Generación Aumentada por Recuperación (RAG), esta bibliotec
 
 ### 1. Generación de Embeddings
 Para convertir texto en vectores y guardarlos en una base de datos:
-* `HuggingFaceEmbeddings`: La clase está para ejecutar modelos de embedding (como los de la serie BGE o E5) localmente.
+* `HuggingFaceEmbedings`: La clase está para ejecutar modelos de embedding (como los de la serie BGE o E5) localmente.
 * `HuggingFaceInferenceAPIEmbeddings`: Para obtener los vectores llamando a la API de Hugging Face sin descargar el modelo.
 
 ### 2. Modelos de Lenguaje (LLM)

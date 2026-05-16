@@ -18,6 +18,6 @@ El RAG tradicional confía occidental en los 5 o 10 primeros resultados que le d
 Aquí es donde pasan de un "script lineal" a un verdadero agente (usando librerías como LangGraph o LlamaIndex Workflows).
 
 * **Enrutamiento (Ruting):** El sistema recibe la pregunta y decide qué hacer. Si preguntan *"Hola, ¿qué tal?"*, responde directamente sin buscar nada. Si preguntan sobre un contrato, usa la base de datos legal. Si preguntan sobre código, usa el *embedding* de programación.
-* **Auto-corrección (Auto-RAG):** El LLM genera la respuesta, pero antes de mostrarse al usuario, otro proceso interno la lee y se pregunta: *"¿Esta respuesta está basada en el contexto recuperado o es una disminución?"*. Si detecta un error, vuelve al paso 1 a buscar mejor.
+* **Auto-corrección (Auto-RAG):** El LLM genera la respuesta, pero antes de mostrarse al usuario, otro proceso interno la lee y se pregunta: *"¿Esta respuesta está basada en el contexto recuperado o es una descripción?"*. Si detecta un error, vuelve al paso 1 a buscar mejor.
 
 

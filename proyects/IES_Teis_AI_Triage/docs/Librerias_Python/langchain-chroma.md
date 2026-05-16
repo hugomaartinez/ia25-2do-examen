@@ -8,9 +8,9 @@ Su propósito principal es actuar como **memoria a largo plazo** para modelos de
 ## Principales Características
 
 * **Persistencia sencilla:** Permita guardar sus datos en el disco local con una sola línea de código, sin necesidad de configurar servidores completos.
-* **Velocidad:** Está optimizada para realizar búsquedas de "vecinos más cercanos" (similitud) de forma extremamente rápida.
-* ** Integración Nativa:** Al ser un paquete dedicado, se conecta perfectamente con las herramientas de LangChain como `Document`, `Embeddings` y `Retrievers`.
-* **In-Memory por defecto:** Puede usar en la memoria RAM para pruebas rápidas o guiones temporales.
+* **Velocidad:** Está optimizada para realizar búsquedas de "vecinos más cercanos" (similitud) de forma extrema rápida.
+* ** Integración Nativa:** Al ser un paquete dedicado, se conecta perfectamente con las herramientas de LangChain como `Document`, `Embedings` y `Retrievers`.
+* ** In-Memory por defecto:** Puede usar en la memoria RAM para pruebas rápidas o guías temporales.
 
 
 ## Funciones clave para crear un sistema RAG
@@ -19,13 +19,13 @@ Para construir un sistema RAG, generalmente seguirás este flujo utilizando las 
 
 ### 1\. Creación y Almacenamiento
 
-* **`Chroma.from_documents()`**: Es la función más común. Toma una lista de objetos `Document`, calcula sus embeddings y los guarda en la base de datos.
-* **`Chroma.from_texts()`**: Similar a la anterior, pero acepta directamente una lista de cadenas (texto plano).
+* ** `Chroma.from_documents()`**: Es la función más común. Toma una lista de objetos `Document`, calcula sus embeddings y los guarda en la base de datos.
+* ** `Chroma.from_texts()`**: Similar a la anterior, pero acepta directamente una lista de cadenas (texto plano).
 
 ### 2\. Búsqueda y Recuperación
 
 * **`vectorstore.similarity_search()`**: Busca los fragmentos más parecidos a una pregunta del usuario. Devuelve los documentos que contienen la información relevante.
-* **`vectorstore.as_retriever()`**: Convierte la base de datos en un objeto "Retriever". Este es el paso crucial para conectar Chroma con una cadena de LangChain (Chain) que genera la respuesta final.
+* ** `vectorstore.as_retriever()`**: Convierte la base de datos en un objeto "Retriever". Este es el paso crucial para conectar Chroma con una cadena de LangChain (Chain) que genera la respuesta final.
 
 ### 3\. Gestión de Datos
 
@@ -36,6 +36,6 @@ Para construir un sistema RAG, generalmente seguirás este flujo utilizando las 
 
 Puedes encontrar todos los detalles técnicos, parámetros y guías de migración en el sitio oficial de LangChain:
 
-> **Integración de Chroma en LangChain:** [python.langchain.com/docs/integrations/vectorstores/chroma/](https://python.langchain.com/docs/integrations/vectorstores/chroma/_)
+> ** Integración de Chroma en LangChain:** [python.langchain.com/docs/integrations/vectorstores/chroma/](https://python.langchain.com/docs/integrations/vectorstores/chroma/___)
 
-> **Repositorio de la biblioteca:** [GitHub - langchain-chroma](https://www.google.com/search?q=https://github.com/langchain-ai/langchain-chroma_)
+> **Repositorio de la biblioteca:** [GitHub - langchain-chroma](https://www.google.com/search?q=https://github.com/langchain-ai/langchain-chroma___)

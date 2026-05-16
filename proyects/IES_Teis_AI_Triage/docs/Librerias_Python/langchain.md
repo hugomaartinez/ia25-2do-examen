@@ -8,7 +8,7 @@ Su propósito principal es actuar como un "pegamento" o **marco de ordenación**
 ## Principales Características
 LangChain se basa en la idea de construir "cadenas" (chains) de operaciones. Aquí están sus pilares:
 
-* **Modelo I/O (Entrada/Salida):** Estandariza la forma en que envío instrucciones al modelo. Incluye la gestión de **Prompts** (plantillas) y la normalización de las respuestas que revelan los distintos productores.
+* **Modelo I/O (Entrada/Salida):** Estandariza la forma en que envío instrucciones al modelo. Incluye la gestión de **Prompts** (plantillas) y la normalización de las respuestas que revelan los distintos productos.
 * **RAG (Retrieval Augmentated Generation):** Es su función estrella. Permite que el modelo consulte documentos externos (PDFs, bases de datos, webs) para responder preguntas basadas en información que no estaba en su servicio original.
 * **Cadenas (Cadenas):** Permita que secuencer tareas. Por ejemplo: "Paso 1: Reanudar este texto -> Paso 2: Traducción al inglés -> Paso 3: Envío por email".
 * **Memoria (Memoria):** Los LLMs por naturaleza no "recuerdan" mensajes anteriores. LangChain facilita añadir un historial de conversación para que la IA tenga el contexto en un chat.
@@ -24,7 +24,7 @@ Langchain se ha convertido en el estado de la industria para construir sistemas 
 Antes de que la IA pueda leer tus archivos, Langchain debe transformarlos en un formato procesable.
 
 * **Document Loaders:** Funciones para importar datos de casi cualquier fuente (PDFs, Notion, Google Drive, páginas web o bases de datos SQL).
-* **Texto Splitters:** Dado que los modelos tienen un límite de "contexto", estas funciones dividen documentos largos en fragmentos (*chunks*) más pequeños. El más común es el `RecursiveCaracterTextSplitter`, que intenta mantener páginas y oraciones juntas para no perder el significado.
+* **Texto Splitters:** Dado que los modelos tienen un límite de "contexto", estas funciones dividen documentos largos en fragmentos (*chunks*) más pequeños. El más común es el `RecursiveCaracerTextSplitter`, que intenta mantener páginas y oraciones juntas para no perder el significado.
 
 
 ### 2. Indexación y Almacenamiento (Vector Stores)
@@ -42,12 +42,12 @@ Esta es quizás la parte más potente. Un **Retriever** no es solo una búsqueda
 * ** Compresión contextual:** Filtra y reanudar los fragmentos recuperados para que solo pase lo reino importante al LLM, ahorrando costos y mejorando la precisión.
 
 
-### 4. Ordenación del Flujo (Chains y LCEL)
+### 4. Orden del Flujo (Chains y LCEL)
 Langchain une la pregunta, la información recuperada y el modelo de lenguaje.
 
 * **RetrievalQA Chain:** Una función "pre-construida" que toma una pregunta, busca en la base de datos y entrega una respuesta final.
 * **LCEL (LangChain Expression Language):** Un lenguaje declarativo que permite encadenar funciones de forma personalizada usando el símbolo . Por ejemplo:
-> `chain = setup_and_retrieval  prompt  model  output_parser`
+> `chain = setup_and_retrieval prompt model output_parser`
 * **Memoria:** Permite que el sistema RAG recupere preguntas anteriores de la conversación para que el usuario pueda hacer preguntas de seguimiento (ej. "¿Puedes darme más detalles sobre *eso*?").
 
 
@@ -60,15 +60,15 @@ Finalmente, Langchain gestiona cómo se le presenta la información al modelo.
 
 ### Resumen del Flujo RAG en Langchain
 
-Etapa  Componente Clave
-:---  :--
-**Preparación**  `DocumentLoaders` + `TextSplitters`
-**Almacenamiento**  `Embedings` + `VectorStore`
-**Búsqueda**  `Retriever`
-**Generación**  `ChatPromptTemplate` + `LLM`
+Etapa Componente Clave
+:---- :--
+**Preparación** `DocumentLoaders` + `TextSplitters`
+**Almacenamiento** `Embedings` + `VectorStore`
+**Búsqueda** `Retriever`
+**Generación** `ChatPromptTemplate` + `LLM`
 
 ## Documentación Oficial
 
 Puedes encontrar guías destacadas, tutoriales y la referencia de la API en el sitio oficial:
 
-> [**LangChain Documentation (__PATH0_)**](_URL0_)
+> [** Documentación LangChain (__PATH0_)**](_URL0_)

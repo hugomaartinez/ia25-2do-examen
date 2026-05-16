@@ -4,15 +4,15 @@ Una pequeña tienda online recibe decenas de correos al día. El dueño perfora 
 
 Nuestro cliente nos pide automatizar este proceso. Para ellos creamos un agente de triaje de emails que actuará como el primer filtro inteligente.
 
-El agente responderá a los correos si sigue encontrando la respuesta en la base de datos creada a partir de las FAQs de TechPyme. Si no sigues encontrando la respuesta lo derivará al departamento de atención al cliente.
+El agente responderá a los correos si sigue encontrando la respuesta en la base de datos creada a partir de las FAQs de TechPyme. Si no sigues encontrado la respuesta lo solicitará al departamento de atención al cliente.
 
 ## Simulación
 
 Para simplificar el proceso se simulará la entrada de correos. Se usará un archivo JSON con 4 casos de prueba: un correo fácil (pregunta por el horario), un correo sobre un envío (pregunta por devoluciones) y un correo completo/queja (producto roto, que debe ser escalado).
 
-- Los correos respondidos se recordarán en un archivo CSV llamado correos_respondidos.csv
+- Los correos respondidos se registrarán en un archivo CSV llamado correos_respondidos.csv
 
-- Los correos escalados se recordarán en un archivo CSV llamado correos_escalados.csv
+- Los correos escalados se grabarán en un archivo CSV llamado correos_escalados.csv
 
 - Al finalizar de procesar el archivo JSON se eliminará para no volver a procesar y permitir una nueva ejecución con otro archivo JSON.
 

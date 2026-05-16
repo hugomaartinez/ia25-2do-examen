@@ -1,8 +1,8 @@
 # Chatbot con Salvaguardas — Ejemplo Didáctico
 
-## ¿Qué Estamos Construyendo?
+## ¿Qué estamos construyendo?
 
-Un chatbot conversacional en Python que puede utilizar un **modelo local** (Ollama — gratis, sin internet requerida) o un **modelo remoto** (Google Gemini, a través de clave de API). Antes de enviar el mensaje del usuario al modelo, y antes de mostrar su respuesta, el código pasa a través de una capa de **salvaguardas** — pequeños filtros que bloquean entradas peligrosas y salidas problemáticas.
+Un chatbot conversacional en Python que puede utilizar un **modelo local** (Ollama — gratis, sin internet requerida) o un **modelo remoto** (Google Gemini, a través de clave de API). Antes de envidiar el mensaje del usuario al modelo, y antes de mostrar su respuesta, el código pasa a través de una capa de **salvaguardas** — pequeños filtros que bloquean entradas peligrosas y salidas problemáticas.
 
 Este patrón (consumir un LLM + validar entradas y salidas) es exactamente lo que se utiliza en producción en la mayoría de productos de IA conversacional hoy en día.
 
@@ -60,7 +60,7 @@ uv run python main.py
         └── output_guard.py # Valida la respuesta del modelo antes de mostrarla al usuario
 ```
 
-La estructura es intencional: `backends/` puede crecer para incluir nuevos proveedores (OpenAI, Anthropic…) sin tocar nada más. `guardrails/` son agnósticos del proveedor — funcionan igual con cualquier modelo. Este es el **principio de responsabilidad única** aplicado a sistemas de IA.
+La estructura es temporal: `backends/` puede crecer para incluir nuevos productores (OpenAI, Anthropic...) sin tocar nada más. `guardrails/` son agnesticos del probador - funcionan igual con cualquier modelo. Este es el **principal de responsabilidad única** aplicado a sistemas de IA.
 
 ---
 
@@ -82,7 +82,7 @@ historial.append(mensaje del asistente)
 respuesta mostrada
 ```
 
-Consulta [`chatbot/engine.py`](chatbot/engine.py) para la implementación de este flujo.
+Consulte [`chatbot/engine.py`](chatbot/engine.py) para la implementación de este flujo.
 
 ---
 
@@ -90,16 +90,16 @@ Consulta [`chatbot/engine.py`](chatbot/engine.py) para la implementación de est
 
 Copia el archivo de ejemplo apropiado a `.env` y completa los valores:
 
-| Variable | Descripción |
-|---|---|
-| `CHAT_MODE` | `"remote"` (Gemini) o `"local"` (Ollama) |
-| `MODEL_NAME` | Modelo a utilizar (p.ej., `gemini-2.5-flash` o `llama3.2`) |
-| `API_KEY` | Requerido para modo remoto. Obtén uno gratis en [aistudio.google.com](https://aistudio.google.com/apikey) |
-| `BASE_URL` | Dirección del servidor Ollama (por defecto: `http://localhost:11434`) |
-| `MAX_HISTORY_TURNS` | Turnos de conversación a mantener en contexto (por defecto: `10`) |
-| `MAX_INPUT_CHARS` | Longitud máxima del mensaje del usuario (por defecto: `500`) |
+Variable Descripción
+------
+`CHAT_MODE`  `"remote"` (Gemini) o `"local"` (Ollama)
+`MODEL_NAME`  Modelo a utilizar (p.ej_., `gemini-2.5-flash` o `llama3.2_`)
+`API_KEY`  Requerido para modo remoto. Obtén uno gratis en [aistudio.google.com](https://aistudio.google.com/apikey_)
+`BASE_URL`  Dirección del servidor Ollama (por defecto: `_URL0___`)
+`MAX_HISTORY_TURNS`  Turnos de conversación a mantener en contexto (por defecto: `10`)
+`MAX_INPUT_CHARS`  Longitud máxima del mensaje del usuario (por defecto: `500`)
 
-> **¿Por qué múltiples archivos (`.env` / `.env.*.example`):** `.env` contiene secretos reales y nunca va al repositorio. Los archivos `.example` documentan qué variables necesita el proyecto sin exponer ningún valor sensible. Este es el estándar en cualquier proyecto profesional.
+> **Por qué múltiples archivos (`.env` / `.env.*.ejemplo`):** `.env` contiene secretos reales y nunca va al repositorio. Los archivos `.example` documentan qué variables necesitan el proyecto sin exponer ningún valor sensible. Este es el estado en cualquier proyecto profesional.
 
 ---
 
@@ -107,24 +107,24 @@ Copia el archivo de ejemplo apropiado a `.env` y completa los valores:
 
 ### Salvaguarda de entrada — [`chatbot/guardrails/input_guard.py`](chatbot/guardrails/input_guard.py)
 
-Valida el mensaje del usuario **antes** de enviarlo al LLM (sin tokens gastados en mensajes rechazados). Verifica en orden:
+Valida el mensaje del usuario **antes** de entorno al LLM (sin tokens gastados en mensajes rechazados). Verifica en orden:
 
 1. **Longitud** — rechaza mensajes vacíos o que excedan `MAX_INPUT_CHARS`
-2. **Fragmentos bloqueados** — rechaza cadenas de inyección conocidas (`<script>`, palabras clave SQL…)
-3. **Patrones de inyección** — detecta intentos de inyección de prompts mediante expresiones regulares (p.ej. *"ignora todas las instrucciones anteriores"*)
+2. ** Fragmentos bloques** — rechaza cadenas de introducción conocidas (script®, palabras clave SQL...)
+3. **Patronos de introducción** — detecta intenciones de introducción de promptes medianate expresiones regulares (__PATH0_. *"ignora todas las instrucciones anteriores"*)
 
-4. **LLM-como-juez** — Utiliza el LLM configurado (con un prompt de seguridad estricto) para evaluar la entrada en busca de jailbreaks complejos o contenido inapropiado que haya esquivado las verificaciones heurísticas simples.
+4. **LLM-como-juez** — Utiliza el LLM configurado (con un prompt de seguridad estrecho) para evaluar la entrada en busca de jailbreaks completos o contenido inadecuado que haya esquivado las verificaciones heurísticas simples.
 
-Cada verificación devuelve `(bool, cadena_razón)`. El primer fallo hace cortocircuito — fallar rápido.
+Cada verificación devolve `(bool, cadena_razón)`. El primer error hace cortocircuito — fallar rápido.
 
-### Salvaguarda de salida — [`chatbot/guardrails/output_guard.py`](chatbot/guardrails/output_guard.py)
+### Salvaguarda de salida — [`chatbot/guardrails/output_guard.py`](__PATH0_)
 
 Valida la respuesta del modelo **antes** de mostrarla al usuario:
 
-1. **No vacío** — detecta rechazos de seguridad vacíos o respuestas de red truncadas
-2. **Fuga sensible** — bloquea respuestas que contienen frases que el modelo nunca debería enviar (claves de API, contenido del prompt del sistema…)
+1. **No vacío** — detecta reconocimientos de seguridad vacíos o respuestas de rojo truncadas
+2. **Fuga sensible** — bloquea respuestas que conservan frases que el modelo nunca debería envidiar (claves de API, contenido del prompt del sistema...)
 
-Devuelve `(True, texto_limpiado)` si pasa, `(False, mensaje_error)` si falla.
+Devenuelve `(Verdadero, texto_limpiado)` si pasa, `(Falso, mensaje_error)` si falla.
 
 ---
 
@@ -137,7 +137,7 @@ ollama>=0.4.0                # Cliente oficial de Python para Ollama
 pydantic-settings>=2.13.1    # Análisis robusto de configuración
 ```
 
-Ambas dependencias de backend se **importan de forma perezosa** — ejecutarse en modo remoto no requiere que `ollama` esté instalado, y viceversa.
+Ambas dependencias de backend se **importan de forma perezosa** — ejecutarse en modo remoto no exigir que `ollama` este instalado, y viceversa.
 
 ---
 
@@ -170,7 +170,7 @@ Tú: exit
 Bot: ¡Adiós!
 ```
 
-### Jailbreak Avanzado Bloqueado por el Juez LLM
+### Jailbreak Avanzado Bloqueado por el Julio LLM
 
 ```
 🤖  Chatbot con Salvaguardas  |  Modo: REMOTO
@@ -188,13 +188,13 @@ Bot: ¡Adiós!
 
 ## Compensaciones Arquitectónicas y Simplificaciones
 
-Este ejemplo prioriza la legibilidad y la seguridad estricta sobre características complejas. Estas son decisiones de diseño conocidas:
+Este ejemplo prioriza la legitimidad y la seguridad estricta sobre características completas. Estas son decisiones de diseño conocidas:
 
-| Compensación / Simplificación | Por qué existe | Solución en producción |
-|---|---|---|
-| **Sin streaming** | Las salvaguardas de salida necesitan la respuesta completa para validar de forma segura antes de mostrarla al usuario. | Validación de chunks de stream (compleja) o buffering de chunks. |
-| **Usuario único, sin sesiones** | Evita la complejidad de la gestión del estado. | Base de datos + ID de sesión por usuario. |
-| **CLI de terminal** | Enfoque en la lógica central, no en la interfaz. | API (FastAPI) o Interfaz web (Gradio). |
+Compensación / Simplificación  Por qué existe  Solución en producción
+-------
+**Sin streaming**  Las salvaguardas de salida necesitan la respuesta completa para validar de forma segura antes de mostrarla al usuario. Validación de trozos de stream (compleja) o buffering de trozos. |
+**Usuario único, sin sesiones**  Evita la complejidad de la gestión del estado. Base de datos + ID de sesión por usuario. |
+**CLI de terminal**  Enfoque en la lógica central, no en la interfaz. API (FastAPI) o Interfaz web (Gradio). |
 
 ---
 
@@ -202,17 +202,17 @@ Este ejemplo prioriza la legibilidad y la seguridad estricta sobre característi
 
 ### Inmediatas
 
-- **Interfaz web con Gradio:** `gr.ChatInterface(engine.chat)` — una línea convierte el engine en una aplicación web con historial visual
-- **Streaming con Salvaguardas:** pasa `stream=True` pero implementa validación basada en chunks para asegurar que los datos sensibles no se filtren token por token.
-- **Historial persistente:** serializa `engine.history` a JSON al salir, recarga al iniciar
+- **Interfaz web con Gradio:** `gr.ChatInterface(__PATH1_)` — una línea convierte el engine en una aplicación web con historial visual
+- **Streaming con Salvaguardas:** pasa `stream=True` pero implementa validación basada en trozos para asegurar que los datos sensibles no se filtran token por token.
+- **Persistente histórica:** serializa `engine.history` a JSON al salir, volver a cargar al iniciar
 
 ### Salvaguardas más robustas
 
-- **Salvaguarda semántica con embeddings:** similitud coseno contra un conjunto de prompts maliciosos conocidos — mucho más difícil de eludir que expresiones regulares
+- **Salvaguarda semántica con embeddings:** simulatud coseno contra un conjunto de prompts maliciosos conocidos — mucho más difícil de eludir que expresiones regulares
 - **Detección de PII:** usa `presidio-analyzer` para detectar y anonimizar correos electrónicos, números de teléfono, IDs antes de enviar al modelo
 
 ### Arquitectura
 
-- **API REST con FastAPI:** endpoints `POST /chat` + `GET /health` — hace el chatbot utilizable desde cualquier frontend
-- **Evaluación automatizada:** un script que envía preguntas predefinidas y compara respuestas locales vs. remotas (benchmarking de LLM)
+- **API REST con FastaPI:** endpoints `POST /chat` + `GET /health` — hace el chatbot utilizable desde cualquier frontend
+- **Evaluación automatizada:** un script que enviaba preguntas predefinidas y compara respuestas locales vs. remotas (benchmarking de LLM)
 - **Desplegar en Hugging Face Spaces:** la aplicación Gradio se despliega de forma gratuita con la clave de API como Secret cifrado

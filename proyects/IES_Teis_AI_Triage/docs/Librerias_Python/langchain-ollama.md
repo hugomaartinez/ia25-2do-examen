@@ -8,7 +8,7 @@ La librería **`langchain-ollama`** es el puente oficial que conecta el ecosiste
 * **Ejecución Local:** Permita usar modelos como Llama 3, Mistral o Phi-3 sin dependiente de APIs de pago (como OpenAI) ni envidiar datos a la nube.
 * ** Integración Nativa:** Está diseñada específicamente para el nuevo estado de LangChain (`langchain-core`), lo que garantiza competitividad con herramientas modernas como LangGraph.
 * ** Soporte Multimodal:** No solo maneja texto; si el modelo lo permite (como LAVA), puedes procesar imágenes.
-* **Streaming y JSON Mode:** Soporta respuestas en tiempo real (palabra por palabra) y puede forjar al modelo a responder en formato JSON, algo vital para que los agentes extraigan datos estructurados.
+* **Streaming y JSON Mode:** Soporta respuestas en tiempo real (palabra por palabra) y puede formar al modelo a responder en formato JSON, algo vital para que los agentes extraigan datos estructurados.
 
 ## Funciones Clave para Crear Agentes
 
@@ -21,10 +21,10 @@ Es la clase principal para instalar el modelo. Para agentes, es crucial activar 
 Esta es la función más importante para agentes modernos. "Vincula" una lista de herramientas (funciones de Python) al modelo para que este sepa que pueda usarlas.
 
 ### 3. `create_react_agent` (o LangGraph)
-Unque LangChain tiene funciones *legacy*, la forma estádar real de crear agentes es mediante **LangGraph**. Se utiliza para definir el ciclo de: *Razonamiento -> Acción -> Observación*.
+Unque LangChain tiene funciones *legacy*, la forma estádar real de crear agentes es mediana **LangGraph**. Se utiliza para definir el ciclo de: *Razonamiento -> Acción -> Observación*.
 
 ### 4. `OllamaEmbedings`
-Unque los agentes rasonan con el chat, a menudo neceitan memoria o buscar documentos. Esta función convierte texto en vectores localmente para alimentar la base de datos del agente.
+Unque los agentes rasonan con el chat, a menú neceitan memoria o buscar documentos. Esta función convierte texto en vectores localmente para alimentar la base de datos del agente.
 
 
 ## Ejemplo Rápido de Agente

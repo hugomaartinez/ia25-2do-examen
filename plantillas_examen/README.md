@@ -1,31 +1,39 @@
 # Plantillas de examen
 
-Esta carpeta sirve como chuleta de trabajo rapido para ejercicios tipicos del examen.
+Esta carpeta sirve como chuleta rapida para llevar al examen.
 
-La idea es que aqui tengas un archivo por tipo de problema, con el flujo minimo y con comentarios sobre:
+No esta pensada como material de estudio largo, sino como una referencia para:
 
-- que hay que revisar antes de entrenar
-- donde suelen aparecer trampas
-- que partes suelen cambiar entre ejercicios
+- identificar rapido el tipo de ejercicio
+- abrir la plantilla adecuada
+- revisar las trampas tipicas antes de ejecutar
 
 ## Como usarlo
 
 1. Abre el archivo del tipo de ejercicio que te toque.
-2. Copia la estructura base.
-3. Cambia solo lo que dependa del dataset o de la consigna.
-4. Revisa los comentarios antes de ejecutar el modelo.
+2. Lee la primera celda para confirmar que es el tipo de problema correcto.
+3. Ejecuta o adapta las celdas por orden.
+4. Cambia solo lo que dependa del dataset o de la consigna.
+5. Revisa la seccion "Si falla" antes de perder tiempo tocando cosas al azar.
+
+## Orden recomendado
+
+1. `00_indice_rapido.ipynb`
+2. la plantilla del tipo de ejercicio
+3. revisar las trampas que aparecen al final de cada notebook
 
 ## Archivos incluidos
 
-- `01_regresion_supervisada.py`
-- `02_clasificacion_binaria.py`
-- `03_clasificacion_multiclase.py`
-- `04_clustering.py`
-- `05_datos_faltantes.py`
-- `06_overfitting_y_hyperparametros.py`
-- `07_red_neuronal_mlp.py`
-- `08_cnn.py`
-- `09_pipeline_end_to_end.py`
+- `00_indice_rapido.ipynb`
+- `01_regresion_supervisada.ipynb`
+- `02_clasificacion_binaria.ipynb`
+- `03_clasificacion_multiclase.ipynb`
+- `04_clustering.ipynb`
+- `05_datos_faltantes.ipynb`
+- `06_overfitting_y_hyperparametros.ipynb`
+- `07_red_neuronal_mlp.ipynb`
+- `08_cnn.ipynb`
+- `09_pipeline_end_to_end.ipynb`
 
 ## Regla general
 
@@ -39,3 +47,6 @@ La idea es que aqui tengas un archivo por tipo de problema, con el flujo minimo 
   - si hay NaN
   - si hace falta normalizar
 
+## Consejo de examen
+
+Si no sabes por donde empezar, abre `00_indice_rapido.ipynb`, ejecuta el mini diagnostico del dataframe y decide la plantilla por el tipo de `target`.

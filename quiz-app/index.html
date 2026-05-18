@@ -92,6 +92,48 @@
     .ri.ri-err{border-color:var(--err)}
     .ri.ri-skip{border-color:var(--warn)}
     @media(max-width:600px){main{padding:14px 10px 60px}.qcard{padding:16px 12px}}
+
+    /* === ESTADÍSTICAS === */
+    .stats-screen{padding:8px 0 40px}
+    .stats-screen h2{font-size:1.3rem;font-weight:800;margin-bottom:4px;color:var(--accent)}
+    .stats-screen p{color:var(--muted);font-size:.85rem;margin-bottom:20px}
+    .stats-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 18px;flex:1;min-width:110px;text-align:center}
+    .stat-card .sc-val{font-size:1.6rem;font-weight:800;line-height:1.1}
+    .stat-card .sc-lbl{font-size:.72rem;color:var(--muted);margin-top:3px}
+    .stat-card.sc-ok .sc-val{color:var(--ok)}
+    .stat-card.sc-err .sc-val{color:var(--err)}
+    .stat-card.sc-warn .sc-val{color:var(--warn)}
+    .stat-card.sc-acc .sc-val{color:var(--accent)}
+    .stats-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .stats-table th{background:var(--surface2);color:var(--muted);padding:8px 10px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)}
+    .stats-table th:nth-child(3),.stats-table th:nth-child(4),.stats-table th:nth-child(5),.stats-table th:nth-child(6){text-align:center}
+    .stats-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+    .stats-table td:nth-child(3),.stats-table td:nth-child(4),.stats-table td:nth-child(5),.stats-table td:nth-child(6){text-align:center}
+    .stats-table tr:hover{background:var(--surface2)}
+    .fail-rate{font-weight:700;padding:2px 7px;border-radius:6px;font-size:.75rem}
+    .fail-high{background:var(--err-bg);color:var(--err)}
+    .fail-mid{background:var(--warn-bg);color:var(--warn)}
+    .fail-low{background:var(--ok-bg);color:var(--ok)}
+    .stats-empty{text-align:center;padding:40px;color:var(--muted)}
+    .stats-row-btn{font-size:.72rem;padding:3px 8px;border-radius:6px;cursor:pointer;background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+    .stats-row-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .stats-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+    .stats-filters label{font-size:.8rem;color:var(--muted)}
+    .mini-bar{display:inline-flex;height:6px;border-radius:3px;overflow:hidden;width:60px;background:var(--border);vertical-align:middle;margin-left:4px}
+    .mini-bar-ok{background:var(--ok);height:100%}
+    .stats-table tr.q-row{cursor:pointer}
+    .stats-table tr.q-row:hover td{background:rgba(108,99,255,.08)}
+    .stats-table tr.q-row td:nth-child(2)::after{content:" ▸";color:var(--muted);font-size:.7rem}
+    .stats-table tr.q-row.open td:nth-child(2)::after{content:" ▾"}
+    .stats-detail-row td{padding:0 !important;border-bottom:2px solid var(--accent)!important;background:var(--surface2)!important}
+    .stats-detail-inner{padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+    .stats-q-full{font-size:.88rem;font-weight:600;line-height:1.6;color:var(--text);margin-bottom:4px}
+    .stats-opt{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:.83rem;line-height:1.5}
+    .stats-opt.s-ok{border-color:var(--ok);background:var(--ok-bg);color:#86efac}
+    .stats-opt .s-dot{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;margin-top:3px}
+    .stats-opt.s-ok .s-dot{background:var(--ok)}
+    .stats-feedback{font-size:.8rem;color:#86efac;background:var(--ok-bg);border:1px solid var(--ok);border-radius:8px;padding:10px 12px;line-height:1.6}
   </style>
 </head>
 <body>
@@ -117,6 +159,7 @@
     </label>
     <button class="primary" onclick="restartQuiz()">↺ Reiniciar</button>
     <button onclick="copyQuestion()" title="Copiar pregunta para enviar a la IA">📋 Copiar pregunta</button>
+    <button onclick="showStats()" title="Ver estadísticas de preguntas más falladas">📊 Estadísticas</button>
     <button onclick="clearStats()" title="Limpiar todas las estadísticas guardadas">🗑️ Limpiar estadísticas</button>
   </div>
 </header>
@@ -331,16 +374,18 @@ function renderQuestion(){
   }
   const [bc, bl] = badgeMap[q.status]||["b-new","Nueva"]
 
-  const optHTML = q.options.map((opt,oi)=>{
+  const order = q._optionOrder || [...Array(q.options.length).keys()]
+  const optHTML = order.map((origIdx, visualIdx)=>{
+    const opt = q.options[origIdx]
     let cls="option", icon=""
     if(showResult){
       cls+=" disabled"
       if(opt.correct){ cls+=" show-ok"; icon=`<span class="opt-icon">✅</span>` }
-      else if(oi===userAnswer&&!opt.correct){ cls+=" show-err"; icon=`<span class="opt-icon">❌</span>` }
+      else if(origIdx===userAnswer&&!opt.correct){ cls+=" show-err"; icon=`<span class="opt-icon">❌</span>` }
     } else {
-      if(oi===userAnswer) cls+=" selected"
+      if(origIdx===userAnswer) cls+=" selected"
     }
-    return `<div class="${cls}" onclick="selectOption(${oi})">
+    return `<div class="${cls}" onclick="selectOption(${origIdx})">
       <span class="dot"></span>
       <span class="opt-text">${esc(opt.text)}</span>${icon}
     </div>`
@@ -558,6 +603,110 @@ function copyQuestion(){
   }).catch(()=>{
     alert("❌ Error al copiar")
   })
+}
+
+function showStats(){
+  revealedAll = false
+  const entries = Object.entries(mem)
+    .map(([num, d]) => {
+      const n = parseInt(num)
+      const q = ALL_QUESTIONS.find(x => x.num === n)
+      const total = d.correct + d.wrong
+      const failRate = total > 0 ? Math.round(d.wrong / total * 100) : 0
+      return { num: n, question: q ? q.question : `Pregunta ${n}`, seen: d.seen, correct: d.correct, wrong: d.wrong, helped: d.helped || 0, lastSeen: d.lastSeen, failRate, total }
+    })
+    .filter(e => e.seen > 0)
+    .sort((a, b) => b.wrong - a.wrong || b.failRate - a.failRate)
+
+  const totalSeen = entries.length
+  const totalCorrect = entries.reduce((s, e) => s + e.correct, 0)
+  const totalWrong = entries.reduce((s, e) => s + e.wrong, 0)
+  const totalAnswers = totalCorrect + totalWrong
+  const globalRate = totalAnswers > 0 ? Math.round(totalCorrect / totalAnswers * 100) : 0
+
+  if (entries.length === 0) {
+    document.getElementById("quizArea").innerHTML = `
+      <div class="stats-screen">
+        <h2>📊 Estadísticas</h2>
+        <div class="stats-empty">
+          <p style="font-size:2rem;margin-bottom:8px">📭</p>
+          <p>Aún no hay datos. Completa al menos un quiz para ver estadísticas.</p>
+          <button class="primary" style="margin-top:16px" onclick="restartQuiz()">↺ Empezar quiz</button>
+        </div>
+      </div>`
+    return
+  }
+
+  const rows = entries.map(e => {
+    const cls = e.failRate >= 60 ? 'fail-high' : e.failRate >= 30 ? 'fail-mid' : 'fail-low'
+    const barOk = e.total > 0 ? Math.round(e.correct / e.total * 100) : 0
+    const bar = `<span class="mini-bar"><span class="mini-bar-ok" style="width:${barOk}%"></span></span>`
+    const qShort = e.question.length > 80 ? e.question.slice(0, 80) + '…' : e.question
+    const q = ALL_QUESTIONS.find(x => x.num === e.num)
+    const opts = q ? q.options.map(opt => {
+      const okCls = opt.correct ? ' s-ok' : ''
+      const icon = opt.correct ? '✅ ' : ''
+      const fb = opt.correct && opt.feedback ? `<div class="stats-feedback" style="margin-top:6px">${esc(opt.feedback)}</div>` : ''
+      return `<div class="stats-opt${okCls}"><span class="s-dot"></span><span>${icon}${esc(opt.text)}</span></div>${fb}`
+    }).join('') : ''
+    const globalFb = q && q.feedback ? `<div class="stats-feedback">💡 ${esc(q.feedback)}</div>` : ''
+
+    return `<tr class="q-row" onclick="toggleStatsRow(${e.num})" id="stats-row-${e.num}">
+      <td><span class="qnum">P${e.num}</span></td>
+      <td style="max-width:320px;line-height:1.4">${esc(qShort)}</td>
+      <td>${e.seen}</td>
+      <td style="color:var(--ok);font-weight:600">${e.correct}</td>
+      <td style="color:var(--err);font-weight:600">${e.wrong}</td>
+      <td><span class="fail-rate ${cls}">${e.failRate}%</span>${bar}</td>
+    </tr>
+    <tr class="stats-detail-row" id="stats-detail-${e.num}" style="display:none">
+      <td colspan="6">
+        <div class="stats-detail-inner">
+          <div class="stats-q-full">${esc(q ? q.question : e.question)}</div>
+          ${opts}
+          ${globalFb}
+        </div>
+      </td>
+    </tr>`
+  }).join('')
+
+  document.getElementById("quizArea").innerHTML = `
+    <div class="stats-screen">
+      <h2>📊 Estadísticas de repaso</h2>
+      <p>Preguntas ordenadas de más a menos falladas · basado en tu historial guardado</p>
+      <div class="stats-summary">
+        <div class="stat-card sc-acc"><div class="sc-val">${totalSeen}</div><div class="sc-lbl">Preguntas vistas</div></div>
+        <div class="stat-card sc-ok"><div class="sc-val">${totalCorrect}</div><div class="sc-lbl">Correctas (total)</div></div>
+        <div class="stat-card sc-err"><div class="sc-val">${totalWrong}</div><div class="sc-lbl">Falladas (total)</div></div>
+        <div class="stat-card ${globalRate >= 70 ? 'sc-ok' : globalRate >= 50 ? 'sc-warn' : 'sc-err'}"><div class="sc-val">${globalRate}%</div><div class="sc-lbl">Acierto global</div></div>
+      </div>
+      <div class="stats-filters">
+        <span style="color:var(--muted);font-size:.8rem">Practicar las más falladas →</span>
+        <button class="primary" onclick="repeatWeak()">🔥 Top falladas</button>
+        <button onclick="restartQuiz()">↺ Quiz completo</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="stats-table">
+          <thead><tr>
+            <th>#</th><th>Pregunta</th><th>Vistas</th><th>✅</th><th>❌</th><th>% Fallo</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;text-align:center">
+        <button onclick="restartQuiz()">← Volver al quiz</button>
+      </div>
+    </div>`
+  document.getElementById("qMemoryWidget").innerHTML = ""
+}
+
+function toggleStatsRow(num){
+  const detail = document.getElementById(`stats-detail-${num}`)
+  const row = document.getElementById(`stats-row-${num}`)
+  if(!detail || !row) return
+  const open = detail.style.display !== 'none'
+  detail.style.display = open ? 'none' : 'table-row'
+  row.classList.toggle('open', !open)
 }
 
 function clearStats(){

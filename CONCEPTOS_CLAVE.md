@@ -32,6 +32,19 @@
 - 🎮 Agente aprende por reward/penalty
 - Ejemplo: Juego de ajedrez, robots
 
+**Paramétricos vs No paramétricos**
+- **Paramétricos:** Suponen una forma funcional y tienen un número fijo de parámetros.
+   - ✅ Ejemplos: Regresión lineal, Regresión logística, Naive Bayes.
+   - ✅ Ventajas: Rápidos de entrenar, requieren menos datos, fáciles de interpretar.
+   - ⚠️ Desventajas: Pueden fallar si la suposición de forma es incorrecta (sesgo).
+
+- **No paramétricos:** No suponen una forma estricta; la complejidad puede crecer con los datos.
+   - ✅ Ejemplos: KNN, Árboles de decisión, métodos kernel (k-NN, Gaussian Processes).
+   - ✅ Ventajas: Flexibles, pueden modelar relaciones complejas sin especificar la forma.
+   - ⚠️ Desventajas: Suelen necesitar más datos, pueden sobreajustar y ser más lentos.
+
+Consejo: Si crees que la relación es simple y conoces la forma, usa paramétricos; si quieres flexibilidad y tienes datos suficientes, considera no paramétricos.
+
 ---
 
 ## 🎯 UNIT 2: ECOSYSTEM PYTHON
